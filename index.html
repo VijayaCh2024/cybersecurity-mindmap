@@ -3,30 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cybersecurity Mind Map</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Cybersecurity Essentials</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Cybersecurity Mind Map</h1>
-    <div class="controls">
-        <div class="search-container">
-            <input type="text" id="search" placeholder="Search...">
-        </div>
-        <div class="zoom-controls">
-            <button id="zoomIn">Zoom In</button>
-            <button id="zoomOut">Zoom Out</button>
-            <button id="resetView">Reset View</button>
-        </div>
+    <div class="container">
+        <header>
+            <h1>Cybersecurity Essentials</h1>
+            <nav>
+                <button id="prevBtn">&lt; Previous</button>
+                <button id="nextBtn">Next &gt;</button>
+            </nav>
+        </header>
+        <main id="content">
+            <!-- Content will be dynamically inserted here -->
+        </main>
     </div>
-    <div class="mind-map" id="mindMap">
-        <!-- Mind map content will be dynamically generated here -->
-    </div>
-    <div class="navigation-controls">
-        <button id="prevButton">Previous</button>
-        <button id="nextButton">Next</button>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>
