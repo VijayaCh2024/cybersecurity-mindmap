@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Cybersecurity Mind Map</title>
+    <title>Cybersecurity Mind Map</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <h1>Cybersecurity Mind Map</h1>
     <div class="controls">
         <div class="search-container">
             <input type="text" id="search" placeholder="Search...">
@@ -20,9 +22,9 @@
     <div class="mind-map" id="mindMap">
         <!-- Mind map content will be dynamically generated here -->
     </div>
-    <div id="popup" class="popup">
-        <span class="popup-close">&times;</span>
-        <div id="popupContent"></div>
+    <div class="navigation-controls">
+        <button id="prevButton">Previous</button>
+        <button id="nextButton">Next</button>
     </div>
 
     <script src="script.js"></script>
