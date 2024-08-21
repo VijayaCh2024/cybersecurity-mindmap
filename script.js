@@ -153,18 +153,68 @@ const topics = [
     }
 ];
 
+const quizzes = [
+    {
+        question: "What are the three main goals of Information Security?",
+        options: [
+            "Confidentiality, Integrity, Availability",
+            "Protection, Detection, Response",
+            "Prevention, Mitigation, Recovery",
+            "Authentication, Authorization, Accounting"
+        ],
+        correctAnswer: 0
+    },
+    {
+        question: "Which of the following is NOT a category of Cyber Security?",
+        options: [
+            "Network Security",
+            "Application Security",
+            "Physical Security",
+            "Data Security"
+        ],
+        correctAnswer: 2
+    },
+    {
+        question: "What does the principle of 'Least Privilege' mean?",
+        options: [
+            "Only the most important users should have access to the system",
+            "Users should have the minimum level of access necessary for their job",
+            "All users should have equal access to all resources",
+            "Administrators should have full access to all systems"
+        ],
+        correctAnswer: 1
+    },
+    {
+        question: "Which of the following is an example of a social engineering attack?",
+        options: [
+            "Distributed Denial of Service (DDoS)",
+            "SQL Injection",
+            "Phishing",
+            "Buffer Overflow"
+        ],
+        correctAnswer: 2
+    }
+];
+
 let currentTopicIndex = 0;
+let topicRead = false;
 
 const contentElement = document.getElementById('content');
 const quizElement = document.getElementById('quiz');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const progressElement = document.getElementById('progress');
-const darkModeToggle = document.getElementById('darkModeToggle');
-const searchInput = document.getElementById('search');
+const topicOverviewElement = document.getElementById('topicOverview');
+
+function showTopicOverview() {
+    topicOverviewElement.textContent = `This course covers ${topics.length} main topics in Cybersecurity Essentials.`;
+}
 
 function showTopic(index) {
     contentElement.classList.remove('fade-in');
+    quizElement.innerHTML = ''; // Clear any existing quiz
+    topicRead = false;
+    
     setTimeout(() => {
         const topic = topics[index];
         let html = `<h2>${topic.title}</h2>`;
@@ -185,7 +235,9 @@ function showTopic(index) {
         contentElement.innerHTML = html;
         contentElement.classList.add('fade-in');
         updateNavButtons();
-        showQuiz(index);
+        
+        // Add an event listener to mark the topic as read when scrolled to bottom
+        contentElement.addEventListener('scroll', checkTopicRead);
     }, 300);
 }
 
@@ -209,21 +261,53 @@ function updateProgress() {
     });
 }
 
+function checkTopicRead() {
+    const element = contentElement;
+    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+        topicRead = true;
+        showQuiz(currentTopicIndex);
+        element.removeEventListener('scroll', checkTopicRead);
+    }
+}
+
 function showQuiz(index) {
-    // This is a placeholder for quiz functionality
-    // You would need to create actual quiz questions for each topic
+    const quiz = quizzes[index];
     quizElement.innerHTML = `
         <h3>Quick Quiz</h3>
         <div class="quiz-question">
-            <p>What is the main goal of Information Security?</p>
+            <p>${quiz.question}</p>
             <ul class="quiz-options">
-                <li class="quiz-option">Protect data confidentiality</li>
-                <li class="quiz-option">Ensure system availability</li>
-                <li class="quiz-option">Maintain data integrity</li>
-                <li class="quiz-option">All of the above</li>
+                ${quiz.options.map((option, i) => `
+                    <li class="quiz-option" onclick="selectOption(${i})">${option}</li>
+                `).join('')}
             </ul>
         </div>
+        <button onclick="checkAnswer()">Submit Answer</button>
     `;
+}
+
+function selectOption(optionIndex) {
+    const options = document.querySelectorAll('.quiz-option');
+    options.forEach((option, i) => {
+        option.classList.toggle('selected', i === optionIndex);
+    });
+}
+
+function checkAnswer() {
+    const selectedOption = document.querySelector('.quiz-option.selected');
+    if (!selectedOption) {
+        alert('Please select an answer before submitting.');
+        return;
+    }
+    
+    const selectedIndex = Array.from(selectedOption.parentNode.children).indexOf(selectedOption);
+    const quiz = quizzes[currentTopicIndex];
+    
+    if (selectedIndex === quiz.correctAnswer) {
+        alert('Correct! Well done!');
+    } else {
+        alert(`Incorrect. The correct answer is: ${quiz.options[quiz.correctAnswer]}`);
+    }
 }
 
 prevBtn.addEventListener('click', () => {
@@ -240,23 +324,6 @@ nextBtn.addEventListener('click', () => {
     }
 });
 
-darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-});
-
-searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const allSections = document.querySelectorAll('.section');
-    allSections.forEach(section => {
-        const text = section.textContent.toLowerCase();
-        if (text.includes(searchTerm)) {
-            section.style.display = 'block';
-            section.querySelector('.section-content').classList.add('active');
-        } else {
-            section.style.display = 'none';
-        }
-    });
-});
-
 // Initial load
+showTopicOverview();
 showTopic(currentTopicIndex);
