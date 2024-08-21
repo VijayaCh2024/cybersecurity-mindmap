@@ -11,14 +11,22 @@
     <div class="container">
         <header>
             <h1>Cybersecurity Essentials</h1>
+            <div class="controls">
+                <input type="text" id="search" placeholder="Search...">
+                <button id="darkModeToggle">Toggle Dark Mode</button>
+            </div>
             <nav>
                 <button id="prevBtn">&lt; Previous</button>
+                <div id="progress"></div>
                 <button id="nextBtn">Next &gt;</button>
             </nav>
         </header>
         <main id="content">
             <!-- Content will be dynamically inserted here -->
         </main>
+        <div id="quiz" class="quiz-container">
+            <!-- Quiz will be dynamically inserted here -->
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
