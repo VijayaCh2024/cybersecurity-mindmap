@@ -1,165 +1,81 @@
-const mindMapData = {
-    title: "Cybersecurity Overview",
-    icon: "fa-shield-alt",
-    children: [
-        {
-            title: "1. Information Security",
-            icon: "fa-lock",
-            content: "Information Security (InfoSec) is the practice of protecting information by mitigating information risks.",
-            children: [
-                // ... (keep the existing InfoSec content)
-            ]
-        },
-        {
-            title: "2. Cyber Security Umbrella",
-            icon: "fa-umbrella",
-            content: "Cyber Security is a broad field that encompasses protecting systems, networks, programs, and data from digital attacks.",
-            children: [
-                // ... (keep the existing Cyber Security Umbrella content)
-            ]
-        },
-        {
-            title: "3. Cyber Security Elements",
-            icon: "fa-puzzle-piece",
-            content: "Cyber Security Elements are the core components that make up a comprehensive cybersecurity strategy.",
-            children: [
-                // ... (keep the existing Cyber Security Elements content)
-            ]
-        },
-        {
-            title: "4. Key Terminologies",
-            icon: "fa-book",
-            content: "Understanding key terminologies is crucial for grasping the concepts of cybersecurity.",
-            children: [
-                // ... (keep the existing Key Terminologies content)
-            ]
-        }
-    ]
-};
+const topics = [
+    {
+        title: "Introduction to Cybersecurity",
+        content: `
+            <p>Cybersecurity is the practice of protecting systems, networks, and programs from digital attacks. These attacks are usually aimed at accessing, changing, or destroying sensitive information; extorting money from users; or interrupting normal business processes.</p>
+            <p>Key aspects of cybersecurity include:</p>
+            <ul>
+                <li>Information Security</li>
+                <li>Network Security</li>
+                <li>Application Security</li>
+                <li>Operational Security</li>
+            </ul>
+        `
+    },
+    {
+        title: "Common Cyber Threats",
+        content: `
+            <p>Understanding common cyber threats is crucial for effective cybersecurity. Some of the most prevalent threats include:</p>
+            <ul>
+                <li>Malware: Software designed to disrupt, damage, or gain unauthorized access to a computer system.</li>
+                <li>Phishing: Fraudulent attempts to obtain sensitive information by disguising as a trustworthy entity.</li>
+                <li>Denial of Service (DoS): Attacks designed to shut down a machine or network, making it inaccessible to its intended users.</li>
+                <li>Man-in-the-Middle (MitM): Attacks where the attacker secretly relays and possibly alters the communications between two parties.</li>
+            </ul>
+        `
+    },
+    {
+        title: "Cybersecurity Best Practices",
+        content: `
+            <p>Implementing cybersecurity best practices can significantly reduce the risk of cyber attacks. Some key practices include:</p>
+            <ul>
+                <li>Using strong, unique passwords for all accounts</li>
+                <li>Keeping software and systems up to date</li>
+                <li>Using anti-virus software and firewalls</li>
+                <li>Implementing multi-factor authentication</li>
+                <li>Regularly backing up data</li>
+                <li>Educating employees about cybersecurity risks and best practices</li>
+            </ul>
+        `
+    }
+];
 
 let currentTopicIndex = 0;
 
-function createNode(node) {
-    const nodeElement = document.createElement('div');
-    nodeElement.className = 'node';
-    
-    const titleElement = document.createElement('div');
-    titleElement.className = 'node-title';
-    
-    const iconElement = document.createElement('i');
-    iconElement.className = `icon fas ${node.icon}`;
-    titleElement.appendChild(iconElement);
-    
-    const titleText = document.createElement('span');
-    titleText.textContent = node.title;
-    titleElement.appendChild(titleText);
-    
-    titleElement.onclick = () => {
-        nodeElement.classList.toggle('expanded');
-    };
-    
-    nodeElement.appendChild(titleElement);
-    
-    if (node.content || node.children) {
-        const contentElement = document.createElement('div');
-        contentElement.className = 'node-content';
-        
-        if (node.content) {
-            const contentText = document.createElement('p');
-            contentText.textContent = node.content;
-            contentElement.appendChild(contentText);
-        }
-        
-        if (node.children) {
-            node.children.forEach(child => {
-                contentElement.appendChild(createNode(child));
-            });
-        }
-        
-        nodeElement.appendChild(contentElement);
-    }
-    
-    return nodeElement;
-}
+const contentElement = document.getElementById('content');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
 
 function showTopic(index) {
-    const mindMap = document.getElementById('mindMap');
-    mindMap.innerHTML = '';
-    
-    if (index >= 0 && index < mindMapData.children.length) {
-        const topicNode = createNode(mindMapData.children[index]);
-        mindMap.appendChild(topicNode);
-        currentTopicIndex = index;
-    }
-    
-    updateNavButtons();
+    contentElement.classList.remove('fade-in');
+    setTimeout(() => {
+        contentElement.innerHTML = `
+            <h2>${topics[index].title}</h2>
+            ${topics[index].content}
+        `;
+        contentElement.classList.add('fade-in');
+        updateNavButtons();
+    }, 300);
 }
 
 function updateNavButtons() {
-    const prevButton = document.getElementById('prevButton');
-    const nextButton = document.getElementById('nextButton');
-    
-    prevButton.disabled = currentTopicIndex === 0;
-    nextButton.disabled = currentTopicIndex === mindMapData.children.length - 1;
+    prevBtn.disabled = currentTopicIndex === 0;
+    nextBtn.disabled = currentTopicIndex === topics.length - 1;
 }
 
-function showNextTopic() {
-    if (currentTopicIndex < mindMapData.children.length - 1) {
-        showTopic(currentTopicIndex + 1);
-    }
-}
-
-function showPreviousTopic() {
+prevBtn.addEventListener('click', () => {
     if (currentTopicIndex > 0) {
-        showTopic(currentTopicIndex - 1);
+        currentTopicIndex--;
+        showTopic(currentTopicIndex);
     }
-}
-
-// Initialize the mind map
-document.addEventListener('DOMContentLoaded', () => {
-    showTopic(0);
-    
-    document.getElementById('prevButton').addEventListener('click', showPreviousTopic);
-    document.getElementById('nextButton').addEventListener('click', showNextTopic);
 });
 
-// Existing zoom functionality
-let currentZoom = 1;
-const mindMapElement = document.getElementById('mindMap');
-
-document.getElementById('zoomIn').addEventListener('click', () => {
-    currentZoom = Math.min(currentZoom + 0.1, 2);
-    mindMapElement.style.transform = `scale(${currentZoom})`;
+nextBtn.addEventListener('click', () => {
+    if (currentTopicIndex < topics.length - 1) {
+        currentTopicIndex++;
+        showTopic(currentTopicIndex);
+    }
 });
 
-document.getElementById('zoomOut').addEventListener('click', () => {
-    currentZoom = Math.max(currentZoom - 0.1, 0.5);
-    mindMapElement.style.transform = `scale(${currentZoom})`;
-});
-
-document.getElementById('resetView').addEventListener('click', () => {
-    currentZoom = 1;
-    mindMapElement.style.transform = `scale(${currentZoom})`;
-    document.querySelectorAll('.node').forEach(node => node.classList.remove('expanded'));
-});
-
-// Existing search functionality
-document.getElementById('search').addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    const nodes = document.querySelectorAll('.node-title');
-    
-    nodes.forEach(node => {
-        const text = node.textContent.toLowerCase();
-        const parent = node.closest('.node');
-        
-        if (text.includes(searchTerm)) {
-            parent.style.display = 'block';
-            parent.classList.add('expanded');
-            node.innerHTML = node.innerHTML.replace(new RegExp(searchTerm, 'gi'), match => `<span class="highlight">${match}</span>`);
-        } else {
-            parent.style.display = 'none';
-            parent.classList.remove('expanded');
-            node.innerHTML = node.innerHTML.replace(/<span class="highlight">|<\/span>/gi, '');
-        }
-    });
-});
+// Initial load
+showTopic(currentTopicIndex);
