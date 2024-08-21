@@ -1,14 +1,15 @@
 :root {
-  --primary-color: #00ff00;
-  --bg-color: #1a1a1a;
-  --text-color: #f0f0f0;
-  --node-bg: #2a2a2a;
-  --node-border: #3a3a3a;
-  --highlight-color: #ff00ff;
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --bg-color: #f5f7fa;
+  --text-color: #333;
+  --node-bg: #ffffff;
+  --node-border: #e0e0e0;
+  --highlight-color: #e74c3c;
 }
 
 body {
-  font-family: 'Courier New', monospace;
+  font-family: 'Roboto', Arial, sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
   margin: 0;
@@ -22,8 +23,8 @@ body {
   margin-bottom: 20px;
   background-color: var(--node-bg);
   padding: 15px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px var(--primary-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .search-container {
@@ -34,62 +35,61 @@ body {
 #search {
   width: 100%;
   padding: 10px;
-  background-color: var(--bg-color);
-  border: 1px solid var(--primary-color);
-  color: var(--text-color);
-  border-radius: 5px;
+  border: 1px solid var(--node-border);
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 .zoom-controls button {
   margin-left: 10px;
   padding: 10px 15px;
-  background-color: var(--node-bg);
-  color: var(--primary-color);
-  border: 1px solid var(--primary-color);
-  border-radius: 5px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .zoom-controls button:hover {
-  background-color: var(--primary-color);
-  color: var(--bg-color);
+  background-color: #2980b9;
 }
 
 .mind-map {
   background-color: var(--node-bg);
-  border-radius: 5px;
-  padding: 20px;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .node {
   border: 1px solid var(--node-border);
-  border-radius: 5px;
-  margin: 10px 0;
-  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 15px 0;
+  transition: box-shadow 0.3s ease;
 }
 
 .node:hover {
-  box-shadow: 0 0 10px var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .node-title {
   cursor: pointer;
-  padding: 10px;
-  background-color: var(--node-bg);
-  border-radius: 5px;
+  padding: 15px;
+  background-color: var(--bg-color);
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
   display: flex;
   align-items: center;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .node-title:hover {
-  background-color: var(--node-border);
+  background-color: #e8eaf6;
 }
 
 .node-content {
-  padding: 10px;
+  padding: 15px;
   display: none;
   border-top: 1px solid var(--node-border);
 }
@@ -110,9 +110,9 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--node-bg);
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 20px var(--primary-color);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   max-width: 80%;
   max-height: 80%;
@@ -125,58 +125,37 @@ body {
   right: 15px;
   cursor: pointer;
   font-size: 24px;
-  color: var(--primary-color);
+  color: var(--secondary-color);
 }
 
 .highlight {
   background-color: var(--highlight-color);
-  color: var(--bg-color);
-  padding: 2px;
-  border-radius: 2px;
+  color: white;
+  padding: 2px 4px;
+  border-radius: 4px;
 }
 
 a {
   color: var(--primary-color);
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 a:hover {
+  color: #2980b9;
   text-decoration: underline;
-  color: var(--highlight-color);
 }
 
-/* Neon effect for main title */
 h1 {
   text-align: center;
-  font-size: 2.5em;
-  color: var(--primary-color);
-  text-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--primary-color), 0 0 15px var(--primary-color), 0 0 20px var(--primary-color);
+  color: var(--secondary-color);
   margin-bottom: 30px;
+  font-size: 2.5em;
 }
 
-/* Matrix-like animation for background */
-@keyframes matrix {
-  0% {
-    background-position: 0% 0%;
-  }
-  100% {
-    background-position: 0% 100%;
-  }
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.05;
-  z-index: -1;
-  background: linear-gradient(0deg, var(--primary-color) 25%, var(--bg-color) 25%, var(--bg-color) 50%, var(--primary-color) 50%, var(--primary-color) 75%, var(--bg-color) 75%);
-  background-size: 4px 4px;
-  animation: matrix 20s linear infinite;
+/* Subtle pattern for background */
+body {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* Responsive design */
@@ -194,3 +173,6 @@ body::before {
     margin: 5px;
   }
 }
+Last edited just now
+
+
