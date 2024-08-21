@@ -156,24 +156,74 @@ const topics = [
 let currentTopicIndex = 0;
 
 const contentElement = document.getElementById('content');
+const quizElement = document.getElementById('quiz');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
+const progressElement = document.getElementById('progress');
+const darkModeToggle = document.getElementById('darkModeToggle');
+const searchInput = document.getElementById('search');
 
 function showTopic(index) {
     contentElement.classList.remove('fade-in');
     setTimeout(() => {
-        contentElement.innerHTML = `
-            <h2>${topics[index].title}</h2>
-            ${topics[index].content}
-        `;
+        const topic = topics[index];
+        let html = `<h2>${topic.title}</h2>`;
+        
+        // Split content into sections
+        const sections = topic.content.split('<h3>');
+        sections.forEach((section, i) => {
+            if (i === 0) return; // Skip the first empty section
+            const [header, ...content] = section.split('</h3>');
+            html += `
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(${i})">${header}</div>
+                    <div class="section-content" id="section-${i}">${content.join('</h3>')}</div>
+                </div>
+            `;
+        });
+        
+        contentElement.innerHTML = html;
         contentElement.classList.add('fade-in');
         updateNavButtons();
+        showQuiz(index);
     }, 300);
+}
+
+function toggleSection(sectionIndex) {
+    const section = document.getElementById(`section-${sectionIndex}`);
+    section.classList.toggle('active');
 }
 
 function updateNavButtons() {
     prevBtn.disabled = currentTopicIndex === 0;
     nextBtn.disabled = currentTopicIndex === topics.length - 1;
+    updateProgress();
+}
+
+function updateProgress() {
+    progressElement.innerHTML = '';
+    topics.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = `progress-dot ${index === currentTopicIndex ? 'active' : ''}`;
+        progressElement.appendChild(dot);
+    });
+}
+
+function showQuiz(index) {
+    // This is a placeholder for quiz functionality
+    // You would need to create actual quiz questions for each topic
+    quizElement.innerHTML = `
+        <h3>Quick Quiz</h3>
+        <div class="quiz-question">
+            <p>What is the main goal of Information Security?</p>
+            <ul class="quiz-options">
+                <li class="quiz-option">Protect data confidentiality</li>
+                <li class="quiz-option">Ensure system availability</li>
+                <li class="quiz-option">Maintain data integrity</li>
+                <li class="quiz-option">All of the above</li>
+            </ul>
+        </div>
+    `;
 }
 
 prevBtn.addEventListener('click', () => {
@@ -188,6 +238,24 @@ nextBtn.addEventListener('click', () => {
         currentTopicIndex++;
         showTopic(currentTopicIndex);
     }
+});
+
+darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+});
+
+searchInput.addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const allSections = document.querySelectorAll('.section');
+    allSections.forEach(section => {
+        const text = section.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            section.style.display = 'block';
+            section.querySelector('.section-content').classList.add('active');
+        } else {
+            section.style.display = 'none';
+        }
+    });
 });
 
 // Initial load
